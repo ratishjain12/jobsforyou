@@ -32,7 +32,7 @@ const JobListItem = ({
   },
 }: JobList) => {
   return (
-    <div className="m-4">
+    <div className="m-2 md:m-auto">
       <Card className=" relative flex flex-col justify-center sm:flex-row sm:justify-normal">
         <Image
           src={companyLogoUrl || companyPlaceholderImage}
