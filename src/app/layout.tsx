@@ -3,12 +3,17 @@ import { ThemeProvider } from "@/components/theme-provider";
 import { Inter } from "next/font/google";
 import "./globals.css";
 import ThemeToggleBtn from "@/components/base/ThemeToggleBtn";
+import { Navbar } from "@/components/component/navbar";
+import Footer from "@/components/component/footer";
 
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: "Jobs-for-you (Job Board)",
-  description: "Developed by ratish jain",
+  title: {
+    default: "Jobs-for-you (Job Board)",
+    template: "$s | Jobs-for-you (Job Board)",
+  },
+  description: "Find your dream job",
 };
 
 export default function RootLayout({
@@ -21,14 +26,16 @@ export default function RootLayout({
       <body className={inter.className}>
         <ThemeProvider
           attribute="class"
-          defaultTheme="system"
+          defaultTheme="dark"
           enableSystem
           disableTransitionOnChange
         >
+          <Navbar />
           {children}
           <div className="fixed bottom-2 right-2 z-50">
             <ThemeToggleBtn />
           </div>
+          <Footer />
         </ThemeProvider>
       </body>
     </html>

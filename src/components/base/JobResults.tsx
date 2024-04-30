@@ -30,11 +30,15 @@ const JobResults = async ({
   const where: Prisma.JobWhereInput = {
     AND: [
       searchFilter,
-      type ? { type } : {},
-      location ? { location } : {},
-      Remote ? { locationType: "Remote" } : {},
-      Hybrid ? { locationType: "Hybrid" } : {},
-      Onsite ? { locationType: "Onsite" } : {},
+      type !== "All types" ? { type } : {},
+      location !== "All locations" ? { location } : {},
+      {
+        OR: [
+          Remote ? { locationType: "Remote" } : {},
+          Hybrid ? { locationType: "Hybrid" } : {},
+          Onsite ? { locationType: "Onsite" } : {},
+        ],
+      },
       { approved: true },
     ],
   };
@@ -47,6 +51,11 @@ const JobResults = async ({
       {jobs?.map((job) => {
         return <JobListItem key={job.id} job={job} />;
       })}
+      {jobs.length === 0 && (
+        <p className="mt-6 text-center text-2xl">
+          No Jobs Found. Try adjusting filters...
+        </p>
+      )}
     </div>
   );
 };
