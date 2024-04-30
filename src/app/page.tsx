@@ -1,13 +1,30 @@
 import JobFilterSidebar from "@/components/base/JobFilterSidebar";
-import JobListItem from "@/components/base/JobListItem";
-import ThemeToggleBtn from "@/components/base/ThemeToggleBtn";
-import prisma from "@/lib/prisma";
+import JobResults from "@/components/base/JobResults";
+import { jobFilterValues } from "@/lib/validation";
 
-export default async function Home() {
-  const jobs = await prisma.job.findMany({
-    where: { approved: true },
-    orderBy: { createdAt: "desc" },
-  });
+interface pageProps {
+  searchParams: {
+    q?: string;
+    type?: string;
+    location?: string;
+    remote?: string;
+    hybrid?: string;
+    onsite?: string;
+  };
+}
+
+export default async function Home({
+  searchParams: { q, type, location, remote, hybrid, onsite },
+}: pageProps) {
+  const filters: jobFilterValues = {
+    q,
+    type,
+    location,
+    Remote: remote === "true",
+    Hybrid: hybrid === "true",
+    Onsite: onsite === "true",
+  };
+
   return (
     <main className="m-auto max-w-4xl">
       <div className="my-4 space-y-4 text-center">
@@ -18,14 +35,7 @@ export default async function Home() {
       </div>
       <div className="flex flex-col md:flex-row">
         <JobFilterSidebar />
-        <div className="grow ">
-          {jobs?.map((job) => {
-            return <JobListItem key={job.id} job={job} />;
-          })}
-        </div>
-      </div>
-      <div className="fixed bottom-2 right-2 z-50">
-        <ThemeToggleBtn />
+        <JobResults filters={filters} />
       </div>
     </main>
   );
