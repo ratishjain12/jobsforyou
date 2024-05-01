@@ -26,7 +26,7 @@ export default async function Home({
   };
 
   return (
-    <main className="m-auto max-w-4xl">
+    <main className="m-auto min-h-[100vh] max-w-4xl">
       <div className="my-4 space-y-4 text-center">
         <h1 className="text-3xl font-bold tracking-tight lg:text-4xl">
           Developer Jobs

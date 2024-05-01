@@ -19,7 +19,7 @@ export function Navbar() {
 
         <Link
           className="rounded-md px-2 py-1 transition-colors hover:bg-gray-800 data-[active=true]:bg-gray-800 data-[active=true]:font-medium"
-          href="#"
+          href="/create/new"
         >
           Post a Job
         </Link>

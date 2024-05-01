@@ -11,7 +11,7 @@ const inter = Inter({ subsets: ["latin"] });
 export const metadata: Metadata = {
   title: {
     default: "Jobs-for-you (Job Board)",
-    template: "$s | Jobs-for-you (Job Board)",
+    template: "%s | Jobs-for-you (Job Board)",
   },
   description: "Find your dream job",
 };
@@ -23,7 +23,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={inter.className}>
+      <body className={`${inter.className}`}>
         <ThemeProvider
           attribute="class"
           defaultTheme="dark"
