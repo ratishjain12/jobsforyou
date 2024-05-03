@@ -8,7 +8,7 @@ export const metadata: Metadata = {
 
 const page = () => {
   return (
-    <div className="h-[80vh]">
+    <div className="">
       <NewJobForm />
     </div>
   );
