@@ -185,7 +185,7 @@ const NewJobForm = () => {
                           {...field}
                         />
                       </FormControl>
-                      <FormMessage className="text-blue-700" />
+                      <FormMessage className=" text-blue-700" />
                     </FormItem>
                   )}
                 />
