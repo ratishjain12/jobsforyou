@@ -9,7 +9,7 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { createJobSchema, createJobType } from "@/lib/validation";
-import { useFieldArray, useForm } from "react-hook-form";
+import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Input } from "@/components/ui/input";
 import Select from "@/components/ui/select";
@@ -18,8 +18,7 @@ import LocationInput from "@/components/ui/LocationInput";
 import { Label } from "@/components/ui/label";
 import TextEditor from "@/components/base/TextEditor";
 import { draftToMarkdown } from "markdown-draft-js";
-import { Button } from "@/components/ui/button";
-import FormSubmitButton from "@/components/base/FormSubmitButton";
+
 import LoadingButton from "@/components/ui/LoadingButton";
 const NewJobForm = () => {
   const form: any = useForm<createJobType>({
@@ -28,17 +27,12 @@ const NewJobForm = () => {
 
   const {
     handleSubmit,
-    watch,
     trigger,
     control,
-    setValue,
     setFocus,
     formState: { isSubmitting },
   } = form;
 
-  async function onsubmit(values: createJobType) {
-    alert(JSON.stringify(values));
-  }
   return (
     <main className="m-auto max-w-3xl">
       <div className="my-3 space-y-3 text-center">
@@ -115,17 +109,18 @@ const NewJobForm = () => {
             <FormField
               control={control}
               name="companyLogo"
-              render={({ field: { value, ...fieldValues } }) => (
+              render={({ field: { value, ...field } }) => (
                 <FormItem>
                   <FormLabel>Company Logo</FormLabel>
                   <FormControl>
                     <Input
                       type="file"
-                      {...fieldValues}
+                      {...field}
                       accept="image/*"
                       onChange={(e) => {
-                        const file = e.target.files?.[0];
-                        fieldValues.onChange(file);
+                        const file = e.target.files?.["0"];
+
+                        field.onChange(file);
                       }}
                     />
                   </FormControl>
@@ -141,7 +136,16 @@ const NewJobForm = () => {
                 <FormItem>
                   <FormLabel>Location Type</FormLabel>
                   <FormControl>
-                    <Select {...field} defaultValue="">
+                    <Select
+                      {...field}
+                      defaultValue=""
+                      onChange={(e) => {
+                        field.onChange(e);
+                        if (e.currentTarget.value === "Remote") {
+                          trigger("location");
+                        }
+                      }}
+                    >
                       <option value="" hidden>
                         Select option
                       </option>
@@ -165,6 +169,7 @@ const NewJobForm = () => {
                   <FormLabel>Office Location</FormLabel>
                   <FormControl>
                     <LocationInput
+                      {...field}
                       placeholder="search for a city"
                       onLocationSelected={field.onChange}
                       ref={field.ref}
@@ -226,6 +231,7 @@ const NewJobForm = () => {
                     </Label>
                     <FormControl>
                       <TextEditor
+                        {...field}
                         onChange={(draft) =>
                           field.onChange(draftToMarkdown(draft))
                         }
