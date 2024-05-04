@@ -9,14 +9,16 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { createJobSchema, createJobType } from "@/lib/validation";
-import { useForm } from "react-hook-form";
+import { useFieldArray, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Input } from "@/components/ui/input";
 import Select from "@/components/ui/select";
 import { jobTypes, locationTypes } from "@/types";
 import LocationInput from "@/components/ui/LocationInput";
 import { Label } from "@/components/ui/label";
-
+import TextEditor from "@/components/base/TextEditor";
+import { draftToMarkdown } from "markdown-draft-js";
+import { Button } from "@/components/ui/button";
 const NewJobForm = () => {
   const form: any = useForm<createJobType>({
     resolver: zodResolver(createJobSchema),
@@ -211,6 +213,43 @@ const NewJobForm = () => {
                 />
               </div>
             </div>
+            <FormField
+              control={control}
+              name="description"
+              render={({ field }) => {
+                return (
+                  <FormItem>
+                    <Label onClick={() => setFocus("description")}>
+                      Description
+                    </Label>
+                    <FormControl>
+                      <TextEditor
+                        onChange={(draft) => draftToMarkdown(draft)}
+                        ref={field.ref}
+                      />
+                    </FormControl>
+                  </FormItem>
+                );
+              }}
+            />
+
+            <FormField
+              control={control}
+              name="salary"
+              render={({ field }) => {
+                return (
+                  <FormItem>
+                    <FormLabel>Salary</FormLabel>
+                    <FormControl>
+                      <Input placeholder="$100,000" type="number" {...field} />
+                    </FormControl>
+                  </FormItem>
+                );
+              }}
+            />
+            <Button variant={"outline"} className="w-full">
+              Submit
+            </Button>
           </form>
         </Form>
       </div>
