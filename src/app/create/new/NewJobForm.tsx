@@ -19,6 +19,8 @@ import { Label } from "@/components/ui/label";
 import TextEditor from "@/components/base/TextEditor";
 import { draftToMarkdown } from "markdown-draft-js";
 import { Button } from "@/components/ui/button";
+import FormSubmitButton from "@/components/base/FormSubmitButton";
+import LoadingButton from "@/components/ui/LoadingButton";
 const NewJobForm = () => {
   const form: any = useForm<createJobType>({
     resolver: zodResolver(createJobSchema),
@@ -224,7 +226,9 @@ const NewJobForm = () => {
                     </Label>
                     <FormControl>
                       <TextEditor
-                        onChange={(draft) => draftToMarkdown(draft)}
+                        onChange={(draft) =>
+                          field.onChange(draftToMarkdown(draft))
+                        }
                         ref={field.ref}
                       />
                     </FormControl>
@@ -247,9 +251,7 @@ const NewJobForm = () => {
                 );
               }}
             />
-            <Button variant={"outline"} className="w-full">
-              Submit
-            </Button>
+            <LoadingButton loading={isSubmitting}>Submit</LoadingButton>
           </form>
         </Form>
       </div>
